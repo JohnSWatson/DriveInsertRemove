@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DriveInsertRemove", "DriveInsertRemove\DriveInsertRemove.vbproj", "{3B9E48D1-1825-455D-A48E-13DF43D35883}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B9E48D1-1825-455D-A48E-13DF43D35883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B9E48D1-1825-455D-A48E-13DF43D35883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B9E48D1-1825-455D-A48E-13DF43D35883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B9E48D1-1825-455D-A48E-13DF43D35883}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30A83804-0F8F-4652-BC7B-89608B862BF2}
+	EndGlobalSection
+EndGlobal
