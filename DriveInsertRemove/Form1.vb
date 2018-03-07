@@ -6,6 +6,7 @@ Public Class Form1
     Private Const DBT_DEVICEREMOVECOMPLETE As Integer = &H8004
     Private Const DBT_DEVTYP_VOLUME As Integer = &H2
 
+    Dim cMyDrive As New MyDrive                             ' A class to manage a USB drive dedicated to this application
 
     'Device information structure
     Public Structure DEV_BROADCAST_HDR
@@ -25,9 +26,10 @@ Public Class Form1
 
     'Function that gets the drive letter from the unit mask
     Private Function GetDriveLetterFromMask(ByRef Unit As Int32) As Char
+        GetDriveLetterFromMask = ""
         For i As Integer = 0 To 25
             If Unit = (2 ^ i) Then
-                Return Chr(Asc("A") + i)
+                GetDriveLetterFromMask = Chr(Asc("A") + i)
             End If
         Next
     End Function
@@ -39,8 +41,8 @@ Public Class Form1
             If CInt(m.WParam) = DBT_DEVICEREMOVECOMPLETE Then
                 Dim Volume As DEV_BROADCAST_VOLUME
                 Volume = DirectCast(Marshal.PtrToStructure(m.LParam, GetType(DEV_BROADCAST_VOLUME)), DEV_BROADCAST_VOLUME)
-                Dim DriveLetter As String = (GetDriveLetterFromMask(Volume.dbcv_unitmask) & ":\")
-                MessageBox.Show("Drive removed " & DriveLetter)
+                cMyDrive.DriveRemoved((GetDriveLetterFromMask(Volume.dbcv_unitmask) & ":\"))
+                cMyDrive.WriteMessage(Me.TextBox1)
             End If
             If CInt(m.WParam) = DBT_DEVICEARRIVAL Then
                 Dim DeviceInfo As DEV_BROADCAST_HDR
@@ -48,14 +50,9 @@ Public Class Form1
                 If DeviceInfo.dbch_devicetype = DBT_DEVTYP_VOLUME Then
                     Dim Volume As DEV_BROADCAST_VOLUME
                     Volume = DirectCast(Marshal.PtrToStructure(m.LParam, GetType(DEV_BROADCAST_VOLUME)), DEV_BROADCAST_VOLUME)
-                    Dim DriveLetter As String = (GetDriveLetterFromMask(Volume.dbcv_unitmask) & ":\")
-                    If IO.File.Exists(IO.Path.Combine(DriveLetter, "test.txt")) Then
-                        '<<<< The test file has been found >>>>
-                        MessageBox.Show("Found test file in " & DriveLetter)
-                    Else
-                        '<<<< Test file has not been found >>>>
-                        MessageBox.Show("Could not find test file")
-                    End If
+                    'Dim DriveLetter As String = (GetDriveLetterFromMask(Volume.dbcv_unitmask) & ":\")
+                    cMyDrive.DriveInserted((GetDriveLetterFromMask(Volume.dbcv_unitmask) & ":\"))
+                    cMyDrive.WriteMessage(Me.TextBox1)
                 End If
             End If
         End If
@@ -63,4 +60,12 @@ Public Class Form1
         MyBase.WndProc(m)
     End Sub
 
+
+    Private Sub TextBox1_Click(sender As Object, e As EventArgs) Handles TextBox1.Click
+        cMyDrive.WriteMessage(Me.TextBox1)
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+        cMyDrive.WriteMessage(Me.TextBox1)
+    End Sub
 End Class
