@@ -24,7 +24,11 @@ Public Class Form1
         Public dbcv_flags As Int16
     End Structure
 
-    'Function that gets the drive letter from the unit mask
+    ''' <summary>
+    ''' Get the drive letter from the unit mask
+    ''' </summary>
+    ''' <param name="Unit"></param>
+    ''' <returns></returns>
     Private Function GetDriveLetterFromMask(ByRef Unit As Int32) As Char
         GetDriveLetterFromMask = ""
         For i As Integer = 0 To 25
@@ -34,7 +38,14 @@ Public Class Form1
         Next
     End Function
 
-    'Override message processing to check for the DEVICECHANGE message
+
+    ''' <summary>
+    ''' Override message processing to check for the DEVICECHANGE message
+    ''' 
+    ''' This was modified slightly from code found on web sorry dont know attribution any more
+    ''' I tried lots of stuff, this worked for me and is simple
+    ''' </summary>
+    ''' <param name="m"></param>
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
 
         If m.Msg = WM_DEVICECHANGE Then
@@ -61,11 +72,21 @@ Public Class Form1
     End Sub
 
 
-    Private Sub TextBox1_Click(sender As Object, e As EventArgs) Handles TextBox1.Click
+    ''' <summary>
+    ''' Just in case the application drive is attached before the application starts
+    ''' Do your stuff on load the application drive class checks for the drive when
+    ''' it itialises
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
         cMyDrive.WriteMessage(Me.TextBox1)
+        ' ----------------  put other on load stuff here
     End Sub
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+    ' ----------------  put other application stuff here
+
+    Private Sub TextBox1_Click(sender As Object, e As EventArgs) Handles TextBox1.Click
         cMyDrive.WriteMessage(Me.TextBox1)
     End Sub
 End Class
